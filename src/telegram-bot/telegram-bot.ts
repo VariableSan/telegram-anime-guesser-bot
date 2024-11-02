@@ -9,10 +9,8 @@ export class TelegramBot {
 
   constructor(private telegramBotService: TelegramBotService) {}
 
-  /* ==================== commands START ==================== */
   @Command('randomanime')
   onCommandList(ctx: Context) {
     this.telegramBotService.handleRandomAnime(ctx);
   }
-  /* ==================== commands END ==================== */
 }
