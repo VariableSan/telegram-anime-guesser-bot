@@ -11,5 +11,3 @@ services:
       - .env
     environment:
       - PORT=${PORT}
-    volumes:
-      - .:/app
