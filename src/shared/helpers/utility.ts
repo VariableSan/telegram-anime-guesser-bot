@@ -187,5 +187,5 @@ export function generateUniqueRandomNumbers(
 }
 
 export function replaceNonAlphanumeric(input: string) {
-  return input.replace(/[^a-zA-Z0-9\sа-яА-Я]/g, '');
+  return input.replace(/[^a-zA-Z0-9\sа-яА-ЯёЁ]/g, '');
 }
