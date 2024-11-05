@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   app:
+    container_name: anime-guesser-bot
+    image: anime-guesser-bot:latest
     build:
       context: .
       dockerfile: Dockerfile
