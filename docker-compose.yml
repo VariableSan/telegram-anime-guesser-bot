@@ -11,3 +11,4 @@ services:
       - .env
     environment:
       - PORT=${PORT}
+    restart: unless-stopped
