@@ -20,11 +20,12 @@ import {
 @Injectable()
 export class TelegramBotService {
   private readonly logger = new Logger(TelegramBotService.name);
+  private readonly PAUSE_TIME = 3000;
+  private readonly baseShikiUrl = process.env.SHIKIMORI_BASE_URI;
+  private readonly maxConcurrentRequests =
+    Number(process.env.MAX_CONCURRENT_REQUESTS) || 3;
 
   private activeRequests = 0;
-  private maxConcurrentRequests =
-    Number(process.env.MAX_CONCURRENT_REQUESTS) || 3;
-  private baseShikiUrl = process.env.SHIKIMORI_BASE_URI;
 
   constructor(private readonly httpService: HttpService) {}
 
@@ -107,19 +108,18 @@ export class TelegramBotService {
       screenshots: [],
     }));
 
-    await Promise.all(
-      randomAnimeList.map(async anime => {
-        try {
-          const { data } = await this.getScreenshotByAnimeId(anime.id);
-          anime.screenshots = data;
-        } catch (error) {
-          this.logger.error(
-            `Failed to get screenshots for anime ID ${anime.id}:`,
-            error,
-          );
-        }
-      }),
-    );
+    for (const anime of randomAnimeList) {
+      try {
+        const { data } = await this.getScreenshotByAnimeId(anime.id);
+        anime.screenshots = data;
+      } catch (error) {
+        this.logger.error(
+          `Failed to get screenshots for anime ID ${anime.id}:`,
+          error,
+        );
+      }
+      await new Promise(resolve => setTimeout(resolve, this.PAUSE_TIME));
+    }
 
     return randomAnimeList;
   }
